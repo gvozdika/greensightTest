@@ -1,0 +1,66 @@
+import { Meta, Story, ArgsTable } from '@storybook/addon-docs/blocks';
+import Search from '@components/Search';
+import routerDecorator from '@decorators/routerDecorator';
+import { wait } from '@scripts/helpers';
+import { mockSearchResultItems } from '@scripts/mock';
+
+<Meta title="Components / Search" component={Search} decorators={[routerDecorator]} />
+
+# Search
+
+<Story
+    name="Controls"
+    args={{
+        clearInputAfterSelect: true,
+        searchAsyncFunc: async inputValue => {
+            const waited = await wait();
+            if (waited) {
+                const filteredItems = mockSearchResultItems.filter(i =>
+                    i.name.toLowerCase().includes(inputValue.toLowerCase())
+                );
+                return filteredItems;
+            }
+            return [];
+        },
+    }}
+>
+    {args => {
+        const [initialInputValue, setinitialInputValue] = React.useState('');
+        return (
+            <div style={{ background: 'grey', paddingBottom: '200px', padding: '20px' }}>
+                <p style={{ color: 'white', button: { color: 'white' } }}>
+                    Введите{' '}
+                    <button style={{ textDecoration: 'underline' }} onClick={() => setinitialInputValue('крупа')}>
+                        "крупа"
+                    </button>{' '}
+                    или{' '}
+                    <button style={{ textDecoration: 'underline' }} onClick={() => setinitialInputValue('рис')}>
+                        "рис"
+                    </button>{' '}
+                    или{' '}
+                    <button style={{ textDecoration: 'underline' }} onClick={() => setinitialInputValue('Попов')}>
+                        "Попов"
+                    </button>
+                </p>
+                <div style={{ width: '400px', padding: '20px' }}>
+                    <Search {...args} inputValueFromProps={initialInputValue} />
+                </div>
+            </div>
+        );
+    }}
+</Story>
+
+## Props
+
+<ArgsTable story="Controls" />
+
+## Docs
+
+Компонент быстрого поиска. Реализован на downshift.
+Дальнейшая реализация будет зависеть от конкретного проекта и от предоставляемого API.
+
+Планируется, что он может искать по разным категориям и показывать результаты в виде ссылок. При клике на найденный результат, в инпут ничего не записывается, а совершается переход по ссылке, однако есть пропс, с помощью которого значение в инпуте затираться не будет.
+
+В пропсы нужно передавать асинхронную ф-цию поиска searchAsyncFunc, которая возвращает данные в виде SearchItem[], описанного внутри компонента.
+
+В поиске по умолчанию настроен debounce и минимальная длина поисковой строки для начала поиска.

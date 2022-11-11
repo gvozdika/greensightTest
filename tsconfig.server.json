@@ -1,0 +1,10 @@
+{
+    "extends": "./tsconfig.json",
+    "compilerOptions": {
+        "target": "ES5",
+        "outDir": "build/server",
+        "noEmit": false
+    },
+    "include": [],
+    "files": ["src/server/prod.ts"]
+}

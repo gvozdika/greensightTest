@@ -1,0 +1,15 @@
+import { Meta } from '@storybook/addon-docs/blocks';
+
+<Meta title="Styleguide / Monitoring & Analytics" />
+
+# Monitoring & Analytics
+
+## New Relic
+
+RWBP интегрирован с New Relic через [node-newrelic](https://github.com/newrelic/node-newrelic). Мониторинг активируется только на боевой среде при передаче ключа лицензии. Т.е. запуск на сервере сайта с мониторингом должен выглядеть, как:
+
+```bash
+ENVIRONMENT=prod NEW_RELIC_LICENSE_KEY=<SECRET_KEY> yarn prod
+```
+
+Настройки New Relic можно изменить через конфиг файл `newrelic.js` в корне приложения.

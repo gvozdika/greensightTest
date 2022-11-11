@@ -1,0 +1,84 @@
+import { Meta, Story, Canvas } from '@storybook/addon-docs/blocks';
+import { triangle, linearGradient, size, border, borderRadius } from 'polished';
+import { useTheme, scale } from '@greensight/gds';
+import centeredDecorator from '@decorators/centeredDecorator';
+
+<Meta title="Styleguide / Polished" decorators={[centeredDecorator]} />
+
+# Polished
+
+[Polished](https://polished.js.org/) содержит набор хелперов вроде sass-миксинов под CSS in JS, которые могут упростить код в ряде ситуаций.
+
+## Use cases
+
+### Triangle helper
+
+<Canvas>
+    <Story name="Triangle Helper">
+        {() => {
+            const Example = () => {
+                const { colors } = useTheme();
+                return (
+                    <div
+                        style={{
+                            ...triangle({
+                                pointingDirection: 'top',
+                                width: `${scale(6)}px`,
+                                height: `${scale(6)}px`,
+                                foregroundColor: `${colors.brand}`,
+                            }),
+                        }}
+                    ></div>
+                );
+            };
+            return <Example />;
+        }}
+    </Story>
+</Canvas>
+
+### Size and linear gradient helpers
+
+<Canvas>
+    <Story name="Size and linear gradient helpers">
+        {() => {
+            const Example = () => {
+                const { colors } = useTheme();
+                return (
+                    <div
+                        style={{
+                            ...size(`${scale(10)}px`, `100%`),
+                            ...linearGradient({
+                                colorStops: [`${colors.brand} 0%`, `${colors.black} 50%`, `${colors.brandSecond} 95%`],
+                                toDirection: 'to top right',
+                                fallback: `${colors.white}`,
+                            }),
+                        }}
+                    ></div>
+                );
+            };
+            return <Example />;
+        }}
+    </Story>
+</Canvas>
+
+### Border helpers
+
+<Canvas>
+    <Story name="Border helpers">
+        {() => {
+            const Example = () => {
+                const { colors } = useTheme();
+                return (
+                    <div
+                        style={{
+                            ...size(`${scale(10)}px`, `${scale(20)}px`),
+                            ...border('1px', 'solid', `${colors.brand}`),
+                            ...borderRadius('top', '10px'),
+                        }}
+                    ></div>
+                );
+            };
+            return <Example />;
+        }}
+    </Story>
+</Canvas>

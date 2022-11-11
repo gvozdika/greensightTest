@@ -1,0 +1,43 @@
+import { Meta, Story, Canvas, ArgsTable } from '@storybook/addon-docs/blocks';
+import { action } from '@storybook/addon-actions';
+import centeredDecorator from '@decorators/centeredDecorator';
+import ProductCard from '@components/ProductCard';
+
+<Meta title="Example / ProductCard" component={ProductCard} decorators={[centeredDecorator]} />
+
+# ProductCard
+
+<Story
+    name="ProductCard"
+    args={{
+        id: '1',
+        name: 'Название товара',
+        image: 'https://via.placeholder.com/150',
+        price: 199.99,
+        onAddToCart: action('onAddToCart'),
+    }}
+>
+    {args => <ProductCard {...args} />}
+</Story>
+
+## Props
+
+<ArgsTable story="ProductCard" />
+
+## Use cases
+
+### Basic
+
+<Canvas>
+    <Story
+        name="Basic"
+        args={{
+            name: 'Название товара',
+            image: 'https://via.placeholder.com/150',
+            price: 199.99,
+            onAddToCart: action('onAddToCart'),
+        }}
+    >
+        {args => <ProductCard {...args} />}
+    </Story>
+</Canvas>

@@ -1,0 +1,146 @@
+import { Meta, Story, Canvas, ArgsTable } from '@storybook/addon-docs/blocks';
+import { text, boolean } from '@storybook/addon-knobs';
+import { action } from '@storybook/addon-actions';
+import * as Yup from 'yup';
+import { Button, scale } from '@greensight/gds';
+import centeredDecorator from '@decorators/centeredDecorator';
+import Datepicker from '.';
+import Form from '@standart/Form';
+import Legend from '@standart/Legend';
+
+<Meta title="Standart / Datepicker" component={Datepicker} decorators={[centeredDecorator]} />
+
+# Datepicker
+
+<Story
+    name="Controls"
+    args={{
+        locale: 'ru',
+        format: 'dd.MM.yyyy',
+        clickUnselectsDay: true,
+        hideOnDayClick: true,
+        onDayChange: action('onDayChange'),
+    }}
+    argTypes={{
+        locale: { control: { type: 'inline-radio', options: ['ru', 'en'] } },
+        clickUnselectsDay: { control: 'boolean' },
+    }}
+>
+    {args => (
+        <Form
+            initialValues={{ datepicker: null }}
+            validationSchema={Yup.object().shape({
+                datepicker: Yup.date().nullable(),
+            })}
+            onSubmit={action('Submit')}
+            css={{ width: '25vw', minWidth: scale(40) }}
+        >
+            <Form.Field name="datepicker">
+                <Legend label="Введите дату" />
+                <Datepicker
+                    {...args}
+                    dayPickerProps={{
+                        showWeekNumbers: boolean('showWeekNumbers', false, 'Daypicker Props'),
+                        showWeekDays: boolean('showWeekDays', true, 'Daypicker Props'),
+                        showOutsideDays: boolean('showOutsideDays', true, 'Daypicker Props'),
+                        enableOutsideDaysClick: boolean('enableOutsideDaysClick', true, 'Daypicker Props'),
+                        fixedWeeks: boolean('fixedWeeks', false, 'Daypicker Props'),
+                        todayButton: text('todayButton', '', 'Daypicker Props'),
+                    }}
+                />
+            </Form.Field>
+            <br />
+            <Button type="submit">Submit</Button>
+        </Form>
+    )}
+</Story>
+
+Использует плагин: [react-day-picker](https://react-day-picker.js.org/).
+
+Компонент представляет собой кастомный **Field** формы. Как и все кастомные поля форм такой компонент вставляется через вложение внутрь **Form.Field**. Соответственно работает он исключительно в рамках **Form** и завязан на formik.
+
+Календарь не управляется через клавиатуру, вместо этого доступен прямой ввод даты в поле. Для удобства в поле встроена маска.
+
+## Props
+
+<ArgsTable story="Controls" />
+
+## Use cases
+
+### Basic
+
+<Canvas>
+    <Story name="Basic">
+        <Form
+            initialValues={{ datepicker: null }}
+            validationSchema={Yup.object().shape({
+                datepicker: Yup.date().nullable(),
+            })}
+            onSubmit={action('Submit')}
+            css={{ width: '25vw', minWidth: scale(40) }}
+        >
+            <Form.Field name="datepicker">
+                <Legend label="Введите дату" />
+                <Datepicker />
+            </Form.Field>
+            <br />
+            <Button type="submit">Submit</Button>
+        </Form>
+    </Story>
+</Canvas>
+
+### Custom format
+
+Компонент позволяет отделять формат даты для визуального представления от реально получаемой (получается всегда реальный объект даты, а не строка). Правда в таком случае ручной набор станет не таким удобным, т.к. маску придётся отключить.
+
+<Canvas>
+    <Story name="Custom format">
+        <Form
+            initialValues={{ datepicker: null }}
+            validationSchema={Yup.object().shape({
+                datepicker: Yup.date().nullable(),
+            })}
+            onSubmit={action('Submit')}
+            css={{ width: '25vw', minWidth: scale(40) }}
+        >
+            <Form.Field name="datepicker">
+                <Legend label="Введите дату" />
+                <Datepicker format="dd MMMM yyyy" mask={null} />
+            </Form.Field>
+            <br />
+            <Button type="submit">Submit</Button>
+        </Form>
+    </Story>
+</Canvas>
+
+### Disabled days
+
+<Canvas>
+    <Story name="Disabled days">
+        <Form
+            initialValues={{ datepicker: null }}
+            validationSchema={Yup.object().shape({
+                datepicker: Yup.date().nullable(),
+            })}
+            onSubmit={action('Submit')}
+            css={{ width: '25vw', minWidth: scale(40) }}
+        >
+            <Form.Field name="datepicker">
+                <Legend label="Введите дату" />
+                <Datepicker
+                    initialMonth={new Date(2020, 1)}
+                    disabledDays={[
+                        new Date(2020, 1, 20),
+                        new Date(2020, 1, 14),
+                        {
+                            after: new Date(2020, 1, 21),
+                            before: new Date(2020, 1, 25),
+                        },
+                    ]}
+                />
+            </Form.Field>
+            <br />
+            <Button type="submit">Submit</Button>
+        </Form>
+    </Story>
+</Canvas>

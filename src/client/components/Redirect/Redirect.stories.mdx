@@ -1,0 +1,20 @@
+import { Meta, ArgsTable } from '@storybook/addon-docs/blocks';
+import Redirect from '@components/Redirect';
+
+<Meta title="Utils / Redirect" component={Redirect} />
+
+# Redirect
+
+Компонент для проставления редиректа по роутам.
+
+Используется как обёртка вокруг компонента `Redirect` из `react-router-dom`. В отличие от стандартного редиректа позволяет вернуть статус (по умолчанию 301) на SSR. Компонент внутри рендерится как `Route` для возможности записи статуса в переменную `staticContext`, доступную на SSR.
+
+Пример использования:
+
+```tsx
+<Redirect from="/checkout" to="/auth" />
+```
+
+## Props
+
+<ArgsTable />

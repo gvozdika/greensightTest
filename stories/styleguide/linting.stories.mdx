@@ -1,0 +1,75 @@
+import { Meta } from '@storybook/addon-docs/blocks';
+
+<Meta title="Styleguide / Linting" />
+
+# Linting
+
+Для облегчения отлавливания ошибок в проект интегрирован линтер `ESLint` для JS. Кроме того для автоматического исправления стилистических ошибок установлен форматтер `Prettier`. Соответственно, общие правила написания JS и CSS диктуются настройками линтеров.
+
+## ESLint
+
+Документация: [ESLint](https://eslint.org/)
+
+Конфигурация: `.eslintrc.js`
+
+Конфиг `ESLint` наследует [стайлгайд AirBnB](https://github.com/airbnb/javascript). Далее его список правил переопределяется нашими. Конфиг откалиброван таким образом, чтобы правила были жёсткие, но в то же время не ударялись в абсурд, и процесс разработки не превращался в процесс удовлетворения линтера.
+
+## Prettier
+
+Документация: [Prettier](https://prettier.io/)
+
+Конфигурация: `.prettierrc.js`
+
+`Prettier` - это opinionated code formatter, что предполагает его высокую субъективность. Эта субъективность является его главным плюсом, т.к. стилистические споры значительно понижают эффективность разработки, постоянно заставляя к ним возвращаться. `Prettier` же разрешает эти споры за нас в соответствии со своим видением, предоставляя разработчикам лишь минимальный набор настроек.
+
+## Контроль качества
+
+Для мгновенного получения реакции со стороны линтеров и автоматической правки форматирования на сейв рекомендуется интегрировать эти инструменты в свою IDE (интеграция с `VSCode` описана ниже). Однако эта интеграция - вещь сугубо персональная и не гарантирует отсутствие плохого кода в production.
+
+Для контроля линтинг встроен на уровень precommit-хуков. Хук определяется через `husky`, и ограничивается только файлами, попавшими в стейдж, т.е. изменёнными в текущем коммите, через `lint-staged`. При наличии ошибок линтера произвести коммит не удастся.
+
+Помимо этого линтинг можно запускать вручную через скрипт `yarn eslint`.
+
+Форматирование можно запускать вручную через скрипт `yarn format`.
+
+## Интеграция с VSCode
+
+Если вы счастливый обладатель `VSCode`, то этот гайд специально для вас.
+
+Устанавливаете следующие расширения:
+
+1. [ESLint](https://marketplace.visualstudio.com/items?itemName=dbaeumer.vscode-eslint)
+1. [Prettier - Code formatter](https://marketplace.visualstudio.com/items?itemName=esbenp.prettier-vscode)
+1. [MDX](https://marketplace.visualstudio.com/items?itemName=silvenon.mdx)
+
+И прописываете глобальные настройки:
+
+```json
+"eslint.validate": [
+    "javascript",
+    "javascriptreact",
+    "typescript",
+    "typescriptreact",
+    "mdx"
+],
+"editor.formatOnSave": true,
+"editor.codeActionsOnSave": {
+    "source.fixAll.eslint": true
+},
+"prettier.requireConfig": true,
+"editor.suggest.showWords": false,
+"editor.snippetSuggestions": "none",
+"emmet.showAbbreviationSuggestions": false,
+"emmet.showExpandedAbbreviation": "inMarkupAndStylesheetFilesOnly",
+"typescript.validate.enable": true,
+```
+
+Эти настройки подключают линтер, активируют форматирование на сейв и ограничивают выдачу саджестов для удобста использования TS.
+
+Кроме того для работы ESLint/Prettier/Typescript с yarn необходимо наличие директории `.yarn/sdk`. Для этого выполните:
+
+```bash
+yarn pnpify --sdk vscode
+```
+
+После чего переключите версию TS на pnpify: откройте любой TS файл -> "Command + Shift + P" -> "Typescript: Select Typescript Version..." -> выберите версию с "pnpify" в названии.

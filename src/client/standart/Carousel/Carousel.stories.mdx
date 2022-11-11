@@ -1,0 +1,257 @@
+import { useState } from 'react';
+import { Meta, Story, Canvas, ArgsTable } from '@storybook/addon-docs/blocks';
+import { Button, Layout, scale } from '@greensight/gds';
+import centeredDecorator from '@decorators/centeredDecorator';
+import Carousel from '.';
+import Picture from '@standart/Picture';
+import theme from '@scripts/theme';
+import cat1 from '@images/simple/cat_1.jpg';
+import cat2 from '@images/simple/cat_2.jpg';
+import cat3 from '@images/simple/cat_3.jpg';
+import cat4 from '@images/simple/cat_4.jpg';
+import cat5 from '@images/responsive/cat_1.jpg';
+import cat6 from '@images/responsive/cat_2.jpg';
+import cat7 from '@images/responsive/cat_3.jpg';
+import cat8 from '@images/responsive/cat_4.jpg';
+
+<Meta title="Standart / Carousel" component={Carousel} decorators={[centeredDecorator]} />
+
+# Carousel
+
+<Story name="Basic">
+    <Carousel>
+        <Carousel.Item>Slide 1</Carousel.Item>
+        <Carousel.Item>Slide 2</Carousel.Item>
+        <Carousel.Item>Slide 3</Carousel.Item>
+        <Carousel.Item>Slide 4</Carousel.Item>
+        <Carousel.Item>Slide 5</Carousel.Item>
+        <Carousel.Item>Slide 6</Carousel.Item>
+        <Carousel.Item>Slide 7</Carousel.Item>
+        <Carousel.Item>Slide 8</Carousel.Item>
+        <Carousel.Item>Slide 9</Carousel.Item>
+        <Carousel.Item>Slide 10</Carousel.Item>
+    </Carousel>
+</Story>
+
+Использует плагин: [react-id-swiper](https://react-id-swiper.ashernguyen.site/) - это обёртка вокруг оригинального [Swiper](https://swiperjs.com/api/), документация которого также будет полезна.
+
+Swiper - объёмная библиотека с множеством фич, так что, чтобы не грузить их все, используется `custom build`. Нужные модули могут настраиваться под проект.
+
+☝🏿 Если у вас что-то не работает, то сначала убедитесь, что этот функционал включен в билд. Полный список модулей доступен в [документации](https://swiperjs.com/api/#custom-build). В текущей версии это:
+
+1. Navigation
+1. Pagination
+1. A11y
+1. Autoplay
+1. EffectFade
+1. Lazy
+1. Keyboard
+
+Компонент карусели не строит высокоуровневых абстракций и позволяет пробрасывать все настройки `Swiper` напрямую. Единственное, что он делает - проставляет smart defaults и упрощает работу с рядом настроек (navigation, pagination, lazy), позволяя просто передать соответствующий булевый проп. Однако их все можно перезаписать снаружи.
+
+🥇 Во всём мире карусели, как правило, используют без циклов, это почему-то у нас в компании такое зацикливание на них (🥁). Так что по умолчанию цикл отключен, и если возможно его не использовать, то не используйте. Активация цикла значительно усложняет внутреннюю реализацию, добавляя виртуальные слайды, что порождает множество багов при попытках сделать что-либо отличное от базовых юзкейсов.
+
+❗️ Со slidesPerView: 'auto' не работают lazy и spaceBetween. Это обусловлено исключительно принципами работы плагина, так что просто не используйте их вместе.
+
+❗️ Swiper ломается при изменении разрешения. Это давно известный баг, который воспроизводится даже в официальных демках. В целом, это не влияет на конечный продукт и может быть проигнорировано, т.к. пользователи не меняют размеры экрана. Просто нужно иметь в виду, что лучше не тестировать карусели через изменение размеров окна, в т.ч. через аддон viewports Storybook. Вместо этого сразу открываете страницу в нужном разрешении и перезагружаете.
+
+## Props
+
+<ArgsTable components={{ Carousel, 'Carousel.Item': Carousel.Item }} />
+
+## Use cases
+
+### Custom carousel
+
+Пример сочетания нескольких атрибутов. В данном случае включаем цикл, режим центрирования, навигацию, пагинацию, меняем количество видимых слайдов и добавляем отступы.
+
+<Canvas>
+    <Story name="Custom carousel">
+        <Carousel navigation pagination spaceBetween={scale(3)} slidesPerView={3} centeredMode loop>
+            <Carousel.Item>Slide 1</Carousel.Item>
+            <Carousel.Item>Slide 2</Carousel.Item>
+            <Carousel.Item>Slide 3</Carousel.Item>
+            <Carousel.Item>Slide 4</Carousel.Item>
+            <Carousel.Item>Slide 5</Carousel.Item>
+            <Carousel.Item>Slide 6</Carousel.Item>
+            <Carousel.Item>Slide 7</Carousel.Item>
+            <Carousel.Item>Slide 8</Carousel.Item>
+            <Carousel.Item>Slide 9</Carousel.Item>
+            <Carousel.Item>Slide 10</Carousel.Item>
+        </Carousel>
+    </Story>
+</Canvas>
+
+### Slides per view with breakpoints
+
+Можно менять пропсы на брейкпоинтах. Например, количество слайдов во вьюпорте. Для этой цели используется проп `breakpoints`.
+
+☝🏿 breakpoints строятся по логике mobile first, так что при указании 480 правила применятся на разрешениях 480+, а правила вне `breakpoints` отработают на разрешениях < 480.
+
+❗️ Не все правила можно менять через `breakpoints`. Нельзя менять правила, которые кардинально меняют логику построения карусели, например `loop`. Смотри параметр `breakpoints` в [документации](https://swiperjs.com/api/#parameters).
+
+<Canvas>
+    <Story name="Slides per view with breakpoints">
+        <Carousel
+            slidesPerView={1}
+            breakpoints={{
+                [theme.layout.breakpoints.xs]: { slidesPerView: 2, spaceBetween: scale(3) },
+                [theme.layout.breakpoints.sm]: { slidesPerView: 3, spaceBetween: scale(4) },
+                [theme.layout.breakpoints.md]: { slidesPerView: 4, spaceBetween: scale(5) },
+                [theme.layout.breakpoints.lg]: { slidesPerView: 'auto', spaceBetween: scale(6) },
+            }}
+        >
+            <Carousel.Item>Slide 1</Carousel.Item>
+            <Carousel.Item>Slide 2</Carousel.Item>
+            <Carousel.Item>Slide 3</Carousel.Item>
+            <Carousel.Item>Slide 4</Carousel.Item>
+            <Carousel.Item>Slide 5</Carousel.Item>
+            <Carousel.Item>Slide 6</Carousel.Item>
+            <Carousel.Item>Slide 7</Carousel.Item>
+            <Carousel.Item>Slide 8</Carousel.Item>
+            <Carousel.Item>Slide 9</Carousel.Item>
+            <Carousel.Item>Slide 10</Carousel.Item>
+        </Carousel>
+    </Story>
+</Canvas>
+
+### Autoplay with fade
+
+Автоматическая карусель с изменённой анимацией.
+
+☝🏿 Обратите внимание, что эта карусель не использует `loop`. Мы изменили анимацию на fade, и возврат к первому слайду стал незаметен.
+
+<Canvas>
+    <Story name="Autoplay with fade">
+        <Carousel autoplay={{ delay: 1000 }} effect="fade">
+            <Carousel.Item>Slide 1</Carousel.Item>
+            <Carousel.Item>Slide 2</Carousel.Item>
+            <Carousel.Item>Slide 3</Carousel.Item>
+            <Carousel.Item>Slide 4</Carousel.Item>
+            <Carousel.Item>Slide 5</Carousel.Item>
+            <Carousel.Item>Slide 6</Carousel.Item>
+            <Carousel.Item>Slide 7</Carousel.Item>
+            <Carousel.Item>Slide 8</Carousel.Item>
+            <Carousel.Item>Slide 9</Carousel.Item>
+            <Carousel.Item>Slide 10</Carousel.Item>
+        </Carousel>
+    </Story>
+</Canvas>
+
+### Lazy loading
+
+Для ленивой загрузки изображений карусели вместо `lazysizes` используется встроенный в Swiper механизм. Чтобы он заработал, необходимо передать в карусель проп `lazy`, а в качестве изображения использовать компонент `Picture` с пропсами `lazy` и `carousel`.
+
+<Canvas>
+    <Story name="Lazy loading">
+        <Carousel lazy>
+            <Carousel.Item>
+                <Picture image={cat1} alt="Cat 1" lazy carousel />
+            </Carousel.Item>
+            <Carousel.Item>
+                <Picture image={cat2} alt="Cat 2" lazy carousel />
+            </Carousel.Item>
+            <Carousel.Item>
+                <Picture image={cat3} alt="Cat 3" lazy carousel />
+            </Carousel.Item>
+            <Carousel.Item>
+                <Picture image={cat4} alt="Cat 4" lazy carousel />
+            </Carousel.Item>
+        </Carousel>
+    </Story>
+</Canvas>
+
+### Outside controls
+
+Доступ к объекту **swiper** осуществляется через его ручное создание снаружи карусели через **useState()** и передачу сеттера через проп **setSwiper** карусели. После инициализации в **swiper** появится инстанс, доступный на чтение. С ним мы можем, к примеру, создать свои кнопки вне карусели, повесив на них хэндлеры, дёргающие методы **slidePrev()** и **slideNext()** из **swiper**.
+
+<Canvas>
+    <Story name="Outside controls">
+        {() => {
+            const Example = () => {
+                const [swiper, setSwiper] = useState();
+                const goNext = () => {
+                    if (swiper !== null) swiper.slideNext();
+                };
+                const goPrev = () => {
+                    if (swiper !== null) swiper.slidePrev();
+                };
+                return (
+                    <div>
+                        <Layout type="flex" justify="space-between" align="center">
+                            <Layout.Item>
+                                <h2>Title</h2>
+                            </Layout.Item>
+                            <Layout.Item>
+                                <Layout type="flex" justify="center" align="center" css={{ height: scale(14) }}>
+                                    <Layout.Item>
+                                        <Button theme="secondary" onClick={goPrev}>
+                                            Prev
+                                        </Button>
+                                    </Layout.Item>
+                                    <Layout.Item>
+                                        <Button onClick={goNext}>Next</Button>
+                                    </Layout.Item>
+                                </Layout>
+                            </Layout.Item>
+                        </Layout>
+                        <Carousel setSwiper={setSwiper}>
+                            <Carousel.Item>Slide 1</Carousel.Item>
+                            <Carousel.Item>Slide 2</Carousel.Item>
+                            <Carousel.Item>Slide 3</Carousel.Item>
+                            <Carousel.Item>Slide 4</Carousel.Item>
+                            <Carousel.Item>Slide 5</Carousel.Item>
+                            <Carousel.Item>Slide 6</Carousel.Item>
+                            <Carousel.Item>Slide 7</Carousel.Item>
+                            <Carousel.Item>Slide 8</Carousel.Item>
+                            <Carousel.Item>Slide 9</Carousel.Item>
+                            <Carousel.Item>Slide 10</Carousel.Item>
+                        </Carousel>
+                    </div>
+                );
+            };
+            return <Example />;
+        }}
+    </Story>
+</Canvas>
+
+### Links
+
+Компонент поддерживает переключение слайдов при навигации по ссылкам через клавиатуру.
+
+<Canvas>
+    <Story name="Links">
+        <Carousel slidesPerView={2} loop>
+            <Carousel.Item>
+                <a href="/">Link 1</a>
+            </Carousel.Item>
+            <Carousel.Item>
+                <a href="/">Link 2</a>
+            </Carousel.Item>
+            <Carousel.Item>
+                <a href="/">Link 3</a>
+            </Carousel.Item>
+            <Carousel.Item>
+                <a href="/">Link 4</a>
+            </Carousel.Item>
+            <Carousel.Item>
+                <a href="/">Link 5</a>
+            </Carousel.Item>
+            <Carousel.Item>
+                <a href="/">Link 6</a>
+            </Carousel.Item>
+            <Carousel.Item>
+                <a href="/">Link 7</a>
+            </Carousel.Item>
+            <Carousel.Item>
+                <a href="/">Link 8</a>
+            </Carousel.Item>
+            <Carousel.Item>
+                <a href="/">Link 9</a>
+            </Carousel.Item>
+            <Carousel.Item>
+                <a href="/">Link 10</a>
+            </Carousel.Item>
+        </Carousel>
+    </Story>
+</Canvas>

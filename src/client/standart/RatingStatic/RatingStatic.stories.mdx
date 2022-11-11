@@ -1,0 +1,56 @@
+import { Meta, Story, Canvas, ArgsTable } from '@storybook/addon-docs/blocks';
+import centeredDecorator from '@decorators/centeredDecorator';
+import Icon from '@svg/view.svg';
+import RatingStatic from '.';
+
+<Meta title="Standart / RatingStatic" component={RatingStatic} decorators={[centeredDecorator]} />
+
+# Rating
+
+<Story
+    name="Controls"
+    args={{
+        value: 3.5,
+        max: 5,
+        status: 'Good',
+    }}
+    argTypes={{
+        max: { control: { type: 'range' } },
+    }}
+>
+    {args => <RatingStatic {...args} />}
+</Story>
+
+Статичный рейтинг, используется для вывода значений любой кратности.
+
+## Props
+
+### RatingStatic
+
+<ArgsTable story="Controls" />
+
+## Use Cases
+
+### Basic
+
+<Canvas>
+    <Story name="Basic">
+        <RatingStatic value={3.5} status="Good" />
+    </Story>
+</Canvas>
+
+### Many items
+
+<Canvas>
+    <Story name="Many items">
+        <RatingStatic value={7.25} max={10} status="Good" />
+    </Story>
+</Canvas>
+
+### Custom Icon
+
+<Canvas>
+    <Story name="Custom icon">
+        <RatingStatic value={3.5} status="Good" Icon={Icon} />
+    </Story>
+</Canvas>

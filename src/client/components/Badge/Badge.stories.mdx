@@ -1,0 +1,28 @@
+import { Meta, Story, Canvas, ArgsTable } from '@storybook/addon-docs/blocks';
+import { text } from '@storybook/addon-knobs';
+import centeredDecorator from '@decorators/centeredDecorator';
+import Badge from '@components/Badge';
+
+<Meta title="Components / Badge" component={Badge} decorators={[centeredDecorator]} />
+
+# Knobs
+
+<Story name="Knobs">
+    <Badge text={text('text', 'В работе')} />
+</Story>
+
+Компонент отображения статусов.
+
+## Props
+
+<ArgsTable story="Knobs" />
+
+## Use cases
+
+### Basic
+
+<Canvas>
+    <Story name="Basic">
+        <Badge text="В работе" />
+    </Story>
+</Canvas>

@@ -1,0 +1,25 @@
+import { Meta, Story, ArgsTable } from '@storybook/addon-docs/blocks';
+import centeredDecorator from '@decorators/centeredDecorator';
+import Legend from '@standart/Legend';
+
+<Meta title="Standart / Legend" component={Legend} decorators={[centeredDecorator]} />
+
+# Legend
+
+Легенда...
+
+TODO Добавить описание и юзкейсы
+
+<Story
+    name="Controls"
+    args={{ as: 'fieldset', label: 'Пример текста', required: false, hint: 'Подсказка' }}
+    argTypes={{ required: { control: 'boolean' } }}
+>
+    {args => <Legend {...args} />}
+</Story>
+
+## Props
+
+### Legend
+
+<ArgsTable story="Controls" />

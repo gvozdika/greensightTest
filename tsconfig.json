@@ -1,0 +1,31 @@
+{
+    "compilerOptions": {
+        "target": "ESNext",
+        "module": "CommonJS",
+        "jsx": "react",
+        "moduleResolution": "node",
+        "esModuleInterop": true,
+        "resolveJsonModule": true,
+        "noEmit": true,
+        "strict": true,
+        "baseUrl": ".",
+        "skipLibCheck": true,
+        "paths": {
+            "@components/*": ["src/client/components/*"],
+            "@containers/*": ["src/client/containers/*"],
+            "@scripts/*": ["src/client/scripts/*"],
+            "@api/*": ["src/client/api/*"],
+            "@images/*": ["src/client/images/*"],
+            "@svg/*": ["src/client/images/icons/*"],
+            "@reducers/*": ["src/client/reducers/*"],
+            "@standart/*": ["src/client/standart/*"],
+            "@decorators/*": [".storybook/decorators/*"],
+            "speed-measure-webpack-plugin": ["src/module.d.ts"],
+            "pnp-webpack-plugin": ["src/module.d.ts"],
+            "react-day-picker": ["src/module.d.ts"],
+            "react-day-picker/DayPickerInput": ["src/module.d.ts"],
+            "@test-utils": ["test/test-utils.tsx"]
+        }
+    },
+    "include": ["src", ".storybook/**/*.ts", ".storybook/**/*.tsx"]
+}

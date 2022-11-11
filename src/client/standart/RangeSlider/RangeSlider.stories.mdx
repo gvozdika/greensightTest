@@ -1,0 +1,40 @@
+import { Meta, Story, Preview, Props } from '@storybook/addon-docs/blocks';
+import RangeSlider from '@standart/RangeSlider';
+import { number, text } from '@storybook/addon-knobs';
+import { action } from '@storybook/addon-actions';
+import centeredDecorator from '@decorators/centeredDecorator';
+import Form from '@standart/Form';
+import { Button, scale } from '@greensight/gds';
+
+<Meta title="Standart / RangeSlider" component={RangeSlider} decorators={[centeredDecorator]} />
+
+# RangeSlider
+
+<Preview>
+    <Story name="Basic">
+        <Form
+            initialValues={{ price: [0, 20] }}
+            onSubmit={action('Submit')}
+            css={{ width: '25vw', minWidth: scale(40) }}
+        >
+            <Form.Field name="price" label="Цена, руб">
+                <RangeSlider
+                    name={text('name', 'price')}
+                    value={[0, 20]}
+                    min={number('min', 0)}
+                    max={number('max', 40)}
+                    step={number('step', 1)}
+                    onChange={action('onChange')}
+                />
+            </Form.Field>
+            <br />
+            <Button type="submit">Submit</Button>
+        </Form>
+    </Story>
+</Preview>
+
+Компонент `RangeSlider` использует input type="number" и компонент `Range` взятый из [rc-slider](https://github.com/react-component/slider). Предназначен для вывода и установки диапазона значений. Внутри компонента производится пересчет введенных в поля значений. Для обновления состояний у отрендеренного компонента необходимо изменить values.
+
+## Props
+
+<Props of={RangeSlider} />

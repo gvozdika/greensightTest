@@ -1,0 +1,33 @@
+import { Meta, Story, Preview, Props } from '@storybook/addon-docs/blocks';
+
+import { text, number, array } from '@storybook/addon-knobs';
+import { action } from '@storybook/addon-actions';
+
+import routerDecorator from '@decorators/routerDecorator';
+import centeredDecorator from '@decorators/centeredDecorator';
+
+import Pagination from '@standart/Pagination';
+
+<Meta title="Standart / Pagination" component={Pagination} decorators={[routerDecorator, centeredDecorator]} />
+
+# Pagination
+
+<Preview>
+    <Story name="Knobs">
+        <Pagination
+            activePage={number('activePage', 10)}
+            pages={number('numberPages', 15)}
+            url={text('url', '/page/')}
+            baseNumberPages={number('baseNumberPages', 7)}
+            urlParams={array('urlParams', [['page', '10']])}
+            handlePageSelected={action('handlePageSelected')}
+        />
+    </Story>
+</Preview>
+
+Компонент переключения страниц. Встречается на всех страницах у которых есть раздельная подгрузка данных.
+Имеет 4 состояния, каждый из которых соответствует енуму "Positions"
+
+## Props
+
+<Props of={Pagination} />

@@ -1,0 +1,53 @@
+import { Meta, Story, Canvas, ArgsTable } from '@storybook/addon-docs/blocks';
+import { action } from '@storybook/addon-actions';
+import centeredDecorator from '@decorators/centeredDecorator';
+import routerDecorator from '@decorators/routerDecorator';
+import mockMenu from '@scripts/mocks/menu';
+import menuIcons from '@scripts/menuIcons';
+
+import Sidebar from '@components/Sidebar';
+
+<Meta title="App / Sidebar" component={Sidebar} decorators={[centeredDecorator, routerDecorator]} />
+
+# Sidebar
+
+<Story
+    name="Sidebar"
+    args={{
+        menuItems: mockMenu,
+        isCutDown: false,
+        cutDownHandler: action('cutDownHandler'),
+        setOverlay: action('setOverlay'),
+    }}
+    argTypes={{
+        isCutDown: { control: 'boolean' },
+    }}
+>
+    {args => <Sidebar {...args} />}
+</Story>
+
+Боковое меню, используется на всех страницах и может находиться в двух состояниях: раскрытом и свернутом.
+
+## Props
+
+<ArgsTable story="Sidebar" />
+
+## Use cases
+
+### Basic
+
+<Canvas>
+    <Story
+        name="Basic"
+        args={{
+            menuItems: [
+                { id: 1, text: 'Каталог', link: '/', Icon: menuIcons.package },
+                { id: 2, text: 'Заказы', link: '/', Icon: menuIcons.cart },
+            ],
+            isCutDown: false,
+            cutDownHandler: action('cutDownHandler'),
+        }}
+    >
+        {args => <Sidebar {...args} />}
+    </Story>
+</Canvas>

@@ -1,0 +1,46 @@
+import { Meta } from '@storybook/addon-docs/blocks';
+
+<Meta title="Styleguide / Router" />
+
+# Router
+
+В качестве роутера используется [React Router](https://reacttraining.com/react-router/web/guides/quick-start).
+
+Роуты задаются в `pages/index.js` в виде конфига. В нём доступны все стандартные параметры роутера + несколько кастомных.
+
+## loadData
+
+Для загрузки данных на этапе серверного рендера предусмотрен параметр конфига `loadData`. В него передаётся функция, в качестве аргументов которой доступны `store` и `req`. Функция должна возвращать промис или массив промисов.
+
+Через `store` можно производить dispatch экшенов. Через `req` доступны параметры url:
+
+1. **url** – путь от '/'
+1. **query** - query-параметры
+
+Например:
+
+```js
+loadData: ({ store, req }) => {
+    return req.query.example && store.dispatch(changeTitle(req.query.example));
+},
+```
+
+## Hooks
+
+На уровне клиентских компонентов доступ к url производится через хуки роутера.
+
+Например, так можно получить query-параметр с именем `example`:
+
+```js
+const { search } = useLocation();
+const searchParams = new URLSearchParams(search);
+const example = searchParams.get('example');
+```
+
+## Status code
+
+Через конфиг можно передать код ответа, отличный от 200 через поле `status`.
+
+## Redirect
+
+Редиректы прописываются в `App.js` через компонент `Redirect`. Использовать переопределённый компонент, т.к. он в отличие от стандартного позволяет передавать код статуса. По умолчанию передаётся 301, переопределяется через проп `status`.

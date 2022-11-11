@@ -1,0 +1,102 @@
+import { Meta, Story, Canvas, ArgsTable } from '@storybook/addon-docs/blocks';
+import { action } from '@storybook/addon-actions';
+import centeredDecorator from '@decorators/centeredDecorator';
+import * as Yup from 'yup';
+import { Button } from '@greensight/gds';
+import Rating from '.';
+import Form from '@standart/Form';
+import Icon from '@svg/view.svg';
+
+<Meta title="Standart / Rating" component={Rating} decorators={[centeredDecorator]} />
+
+# Rating
+
+<Story
+    name="controls"
+    args={{
+        name: 'controls',
+        legend: 'Рейтинг:',
+        isHalf: false,
+        isHiddenLegend: true,
+        onChange: action('onChange'),
+    }}
+    argTypes={{
+        isHalf: { control: 'boolean' },
+        isHiddenLegend: { control: 'boolean' },
+    }}
+>
+    {args => <Rating {...args} />}
+</Story>
+
+Динамический рейтинг, используется для вывода и установки целых или кратных 0.5 значений.
+
+Изнутри **Rating** построен на радиобаттонах, поэтому управление через клавиатуру работает аналогично. В том числе, как и **Radio** он строится на fieldset, так что обязан иметь **legend**, который может быть визуально скрыт через **isHiddenLegend**. Использование радиобаттонов добавляет ограничение на кратность и дискретность выбора (нельзя вести пальцем на тачах).
+
+## Props
+
+<ArgsTable story="controls" />
+
+## Use cases
+
+### Basic
+
+<Canvas>
+    <Story name="Basic">
+        <Rating name="basic" legend="Рейтинг:" />
+    </Story>
+</Canvas>
+
+### Half stars
+
+<Canvas>
+    <Story name="Half stars">
+        <Rating name="half" legend="Рейтинг:" isHalf />
+    </Story>
+</Canvas>
+
+### Visible legend
+
+<Canvas>
+    <Story name="Visible legend">
+        <Rating name="legend" legend="Рейтинг:" isHiddenLegend={false} />
+    </Story>
+</Canvas>
+
+### Custom icon
+
+<Canvas>
+    <Story name="Custom icon">
+        <Rating name="icon" legend="Рейтинг:" Icon={Icon} />
+    </Story>
+</Canvas>
+
+### With Form
+
+Используем рейтинг с формой.
+
+<Canvas>
+    <Story name="Form">
+        {() => {
+            const initialValues = {
+                rating: 1,
+            };
+            const validationSchema = Yup.object().shape({
+                rating: Yup.number().required('Обязательное поле'),
+            });
+            return (
+                <Form
+                    initialValues={initialValues}
+                    validationSchema={validationSchema}
+                    onSubmit={action('Submit')}
+                    style={{ width: '25vw', minWidth: '320px' }}
+                >
+                    <Form.Field name="rating">
+                        <Rating Icon={Icon} legend="Оцените Вадяна:" isHiddenLegend isHalf />
+                    </Form.Field>
+                    <br />
+                    <Button type="submit">Submit</Button>
+                </Form>
+            );
+        }}
+    </Story>
+</Canvas>

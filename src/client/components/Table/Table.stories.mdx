@@ -1,0 +1,29 @@
+import { Meta, Story, ArgsTable } from '@storybook/addon-docs/blocks';
+import { action } from '@storybook/addon-actions';
+import centeredDecorator from '@decorators/centeredDecorator';
+import routerDecorator from '@decorators/routerDecorator';
+import { columns as defaultColumns } from '@scripts/data/columns';
+import makeData from '@scripts/makeData';
+
+import Table from '@components/Table';
+
+<Meta title="Components / Table" component={Table} decorators={[centeredDecorator, routerDecorator]} />
+
+# Table
+
+<Story
+    name="Table"
+    args={{
+        columns: defaultColumns,
+        data: makeData(4),
+        handleRowInfo: action('handleRowInfo'),
+    }}
+>
+    {args => <Table {...args} />}
+</Story>
+
+Таблица c товарами. Используется плагин: [react-table](https://github.com/tannerlinsley/react-table). Компонент принимает на вход массивы со столбцами и данными и выводит их в виде таблицы. Поддерживает выделение ячеек. Также принимает метод для обработки клика при нажатии на кнопку с троеточием.
+
+## Props
+
+<ArgsTable story="Table" />

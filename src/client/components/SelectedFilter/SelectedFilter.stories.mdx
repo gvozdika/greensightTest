@@ -1,0 +1,29 @@
+import { Meta, Story, Canvas, ArgsTable } from '@storybook/addon-docs/blocks';
+import { text } from '@storybook/addon-knobs';
+import { action } from '@storybook/addon-actions';
+import centeredDecorator from '@decorators/centeredDecorator';
+import SelectedFilter from '@components/SelectedFilter';
+
+<Meta title="Components / SelectedFilter" component={SelectedFilter} decorators={[centeredDecorator]} />
+
+# Knobs
+
+<Story name="Knobs">
+    <SelectedFilter text={text('text', 'Filters Pill')} onRemoveFilter={action('onRemoveFilter')} />
+</Story>
+
+Компонент выбранного фильтра с возможностью удаления по клику на кнопку.
+
+## Props
+
+<ArgsTable story="Knobs" />
+
+## Use cases
+
+### Basic
+
+<Canvas>
+    <Story name="Basic">
+        <SelectedFilter text="Filters Pill" onRemoveFilter={action('onRemoveFilter')} />
+    </Story>
+</Canvas>
